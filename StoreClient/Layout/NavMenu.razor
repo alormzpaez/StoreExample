@@ -1,0 +1,22 @@
+﻿<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">
+        <div style="display: flex; align-content: center;">
+            <MudIcon Icon="@Icons.Material.Filled.Home" Title="Inicio" />&nbsp;Inicio
+        </div>
+    </MudNavLink>
+    <MudNavGroup Title="Tienda" Expanded="true">
+        <MudNavLink Href="/products" Match="NavLinkMatch.All">
+            <div style="display: flex; align-content: center;">
+                <MudIcon Icon="@Icons.Material.Filled.GridView" Title="Todos los productos" />&nbsp;Todos los productos
+            </div>
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Administrador" Expanded="true">
+        <MudNavLink Href="/products/create" Match="NavLinkMatch.All">
+            <div style="display: flex; align-content: center;">
+                <MudIcon Icon="@Icons.Material.Filled.AddBox" Title="Crear producto" />&nbsp;Crear producto
+            </div>
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavLink Href="/about" Match="NavLinkMatch.All">Sobre nosotros</MudNavLink>
+</MudNavMenu>

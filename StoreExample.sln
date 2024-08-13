@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreApi", "StoreApi\StoreApi.csproj", "{3EF384A4-0FFB-4871-9F3B-6B2E96E52D18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreClient", "StoreClient\StoreClient.csproj", "{BCE9A809-AA38-4CA3-8B29-882B57D05D54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EF384A4-0FFB-4871-9F3B-6B2E96E52D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF384A4-0FFB-4871-9F3B-6B2E96E52D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF384A4-0FFB-4871-9F3B-6B2E96E52D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF384A4-0FFB-4871-9F3B-6B2E96E52D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE9A809-AA38-4CA3-8B29-882B57D05D54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE9A809-AA38-4CA3-8B29-882B57D05D54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE9A809-AA38-4CA3-8B29-882B57D05D54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE9A809-AA38-4CA3-8B29-882B57D05D54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C54F322-6A19-4952-905B-FF608661FCB8}
+	EndGlobalSection
+EndGlobal

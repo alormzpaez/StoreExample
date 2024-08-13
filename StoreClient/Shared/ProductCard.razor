@@ -1,0 +1,79 @@
+﻿@using StoreClient.Models
+@inject StoreClient.Services.IProductService productService
+@inject NavigationManager NavigationManager;
+
+<MudCard>
+    <MudCardHeader>
+        <div style="width: 100%; display: flex; flex-direction: row-reverse;">
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert" AriaLabel="Open user menu">
+                <MudMenuItem IconSize="Size.Medium" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Edit" OnClick="OnUpdate">Editar</MudMenuItem>
+                <MudMenuItem IconSize="Size.Medium" IconColor="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="OnDelete">Eliminar</MudMenuItem>
+            </MudMenu>
+        </div>
+    </MudCardHeader>
+    <MudCardMedia Image="@Product.ThumbnailUrl" Height="200" />
+    <MudCardContent>
+        <MudText Typo="Typo.h5">@Product.Name</MudText>
+        <MudText Typo="Typo.body2">@Product.Description</MudText>
+        <MudText Typo="Typo.body2">
+            Con <MudChip T="string" Color="Color.Primary">@Product.Variants?.Count</MudChip> variantes
+        </MudText>
+    </MudCardContent>
+    <MudCardActions>
+        <MudText Typo="Typo.body2">
+            @if (Product.LowestVariant?.RetailPrice != null)
+            {
+                @("Desde")
+            }
+            <MudText Typo="Typo.h5">
+                @if (Product.LowestVariant?.RetailPrice != null)
+                {
+                    @($"${String.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F2}", Product.LowestVariant?.RetailPrice)}")
+                }
+            </MudText>
+        </MudText>
+        <MudSpacer />
+        <MudButton Variant="MudBlazor.Variant.Text" Color="Color.Primary" OnClick="ShowProduct">Ver más</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Product Product { get; set; }
+
+    [Inject] 
+    private IDialogService DialogService { get; set; }
+
+    private void OnUpdate()
+    {
+        NavigationManager.NavigateTo($"/products/{Product.ProductID}/edit");
+    }
+
+    private async void OnDelete()
+    {
+        bool? result = await DialogService.ShowMessageBox(
+            "Alerta",
+            "¿Estás seguro de eliminar esto?",
+            yesText: "Eliminar", cancelText: "Cancelar");
+
+        if (result == true)
+        {
+            await DeleteProduct();
+        }
+
+        StateHasChanged();
+    }
+
+    private void ShowProduct()
+    {
+        NavigationManager.NavigateTo($"/products/{Product.ProductID}");
+    }
+
+    private async Task DeleteProduct()
+    {
+        await productService.Destroy(Product.ProductID);
+
+        NavigationManager.NavigateTo("/products/deleted");
+    }
+}

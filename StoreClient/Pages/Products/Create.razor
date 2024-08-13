@@ -1,0 +1,36 @@
+﻿@page "/products/create"
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using StoreClient.Models
+@inject ILogger<Create> logger
+@inject StoreClient.Services.IProductService productService
+@inject NavigationManager NavigationManager;
+
+<MudText Typo="Typo.h3">Crear producto</MudText>
+<br />
+
+<EditForm Model="product">
+    <MudGrid Class="d-flex justify-center">
+        <MudItem xs="12" sm="7">
+            <MudPaper Class="pa-4">
+                <MudTextField @bind-Value="product.Name" T="string" Label="Nombre" Required="true" RequiredError="El nombre es requerido" OnlyValidateIfDirty="true" />
+                <MudTextField @bind-Value="product.ThumbnailUrl" T="string" Label="Url de fotografía" Required="true" RequiredError="La url de la fotografía es requerida" OnlyValidateIfDirty="true" />
+                <MudTextField @bind-Value="product.Description" T="string" Label="Descripción" Required="true" RequiredError="La descripción es requerida" OnlyValidateIfDirty="true" />
+                <div class="d-flex align-center justify-space-between mt-4">
+                    <MudButton Variant="MudBlazor.Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="PostProduct">Crear</MudButton>
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+
+@code {
+    public Product product = new Product();
+
+    private async Task PostProduct()
+    {
+        await productService.Store(product);
+
+        NavigationManager.NavigateTo("/products");
+    }
+}

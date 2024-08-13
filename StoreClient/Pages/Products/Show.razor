@@ -1,0 +1,79 @@
+﻿@page "/products/{productId}"
+@using StoreClient.Models
+@inject StoreClient.Services.IProductService productService
+
+<div style="width: 100%; display: flex; gap: 1rem;">
+    <div style="width: 50%;">
+        <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="true" ShowBullets="true" EnableSwipeGesture="true" AutoCycle="true" TData="object">
+            <MudCarouselItem Transition="Transition.Slide" Color="@Color.Dark">
+                <div class="d-flex" style="height:100%;">
+                    <img src="@Product?.ThumbnailUrl"
+                         style="max-width: 100%; max-height: 100%; object-fit: cover; margin: auto;"
+                    alt="Photo" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="Transition.Slide" Color="@Color.Primary">
+                <div class="d-flex" style="height:100%;">
+                    <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+                </div>
+            </MudCarouselItem>
+            <MudCarouselItem Transition="Transition.Slide" Color="@Color.Secondary">
+                <div class="d-flex" style="height:100%;">
+                    <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.MudBlazor" Size="@Size.Large" />
+                </div>
+            </MudCarouselItem>
+        </MudCarousel>
+    </div>
+    <div style="width: 50%; padding: 2rem;">
+        <MudText Typo="Typo.h5">@Product?.Name</MudText>
+        <MudText Typo="Typo.body2">
+            @if (Product?.LowestVariant?.RetailPrice != null)
+            {
+                @("Desde")
+            }
+            <MudText Typo="Typo.h5">
+                @if (Product?.LowestVariant?.RetailPrice != null)
+                {
+                    @($"${String.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F2}", Product.LowestVariant?.RetailPrice)}")
+                }
+            </MudText>
+        </MudText>
+        <MudRating SelectedValue="2" />
+        <MudText Typo="Typo.body2">Estas son las variantes:</MudText>
+        <MudTable Items="@Product?.Variants" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+            <HeaderContent>
+                <MudTh>Nombre</MudTh>
+                <MudTh>Precio</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nombre">@context.Name</MudTd>
+                <MudTd DataLabel="Precio">
+                    @($"${String.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:F2}", context.RetailPrice)}")
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string productId { get; set; }
+
+    public Product? Product;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>(nameof(productId), out var value))
+        {
+            if (value is not null)
+                productId = value;
+        }
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Product = await productService.Show(int.Parse(productId));
+    }
+}

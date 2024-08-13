@@ -1,0 +1,59 @@
+﻿@page "/products/{productId}/edit"
+@using StoreClient.Models
+@inject StoreClient.Services.IProductService productService
+@inject NavigationManager NavigationManager;
+
+<MudText Typo="Typo.h3">Editar producto</MudText>
+<br />
+
+@if (Product == null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+} else
+{
+    <EditForm Model="Product">
+        <MudGrid Class="d-flex justify-center">
+            <MudItem xs="12" sm="7">
+                <MudPaper Class="pa-4">
+                    <MudTextField @bind-Value="Product.Name" T="string" Label="Nombre" Required="true" RequiredError="El nombre es requerido" OnlyValidateIfDirty="true" />
+                    <MudTextField @bind-Value="Product.ThumbnailUrl" T="string" Label="Url de fotografía" Required="true" RequiredError="La url de la fotografía es requerida" OnlyValidateIfDirty="true" />
+                    <MudTextField @bind-Value="Product.Description" T="string" Label="Descripción" Required="true" RequiredError="La descripción es requerida" OnlyValidateIfDirty="true" />
+                    <div class="d-flex align-center justify-space-between mt-4">
+                        <MudButton Variant="MudBlazor.Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="PutProduct">Actualizar</MudButton>
+                    </div>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public string productId { get; set; }
+
+    public Product? Product;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>(nameof(productId), out var value))
+        {
+            if (value is not null)
+                productId = value;
+        }
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Product = await productService.Show(int.Parse(productId));
+    }
+
+    private async Task PutProduct()
+    {
+        await productService.Update(Product.ProductID, Product);
+
+        NavigationManager.NavigateTo("/products");
+    }
+}

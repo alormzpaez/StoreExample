@@ -1,0 +1,41 @@
+﻿@page "/products"
+@using StoreClient.Models
+@using StoreClient.Services
+@inject IProductService productService;
+
+<MudText Typo="Typo.h3">Todos los productos</MudText>
+<br />
+
+@if (products?.Count > 0)
+{
+	<MudGrid Spacing="6" Justify="Justify.Center">
+		@foreach (var item in products)
+		{
+			<MudItem>
+				<ProductCard Product="item" />
+			</MudItem>
+		}
+	</MudGrid>
+}
+else if (products?.Count == 0)
+{
+	<span>No hay productos</span>
+}
+else
+{
+	<MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+}
+
+@code {
+	private List<Product>? products = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		products = await GetProducts();
+	}
+
+	private async Task<List<Product>> GetProducts()
+	{
+		return await productService.Index();
+	}
+}
